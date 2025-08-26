@@ -2,18 +2,18 @@ import argon2 from 'argon2';
 import ms from 'ms';
 import { randomUUID } from 'crypto';
 import { User } from '../models/User';
-import { signAccessToken, signRefreshToken, verifyRefresh } from '../utils/tokens';
-import { redis } from '../redis';
+import { signAccessToken, signRefreshToken, verifyRefresh } from '../utils/token';
 import { config } from '../config';
+import { redis } from '../redis';
 
 function cookieOptions() {
   return {
     httpOnly: true,
     secure: config.nodeEnv === 'production',
     sameSite: 'strict' as const,
-    domain: config.cookieDomain,
-    path: '/api/auth/refresh',
-    maxAge: ms(config.refreshTtl)
+    domain: undefined,
+    path: '/',
+    maxAge: Number(ms(config.refreshTtl))
   };
 }
 

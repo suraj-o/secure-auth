@@ -19,16 +19,22 @@ export interface RefreshPayload extends JWTPayload {
 }
 
 export async function signAccessToken(userId: string, jti = randomUUID()) {
-  const ttlMs = ms(Number(config.accessTtl));
+  const ttlMs = ms(config.accessTtl);
+  if (typeof ttlMs !== "number") {
+    throw new Error(`Invalid accessTtl: ${config.accessTtl}`);
+  }
   return new SignJWT({ sub: userId, jti, kind: 'access' } as AccessPayload)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
-    .setExpirationTime(Math.floor((Date.now() + ttlMs) / 1000))
+    .setExpirationTime(Math.floor(((Date.now() + ttlMs)) / 1000))
     .sign(enc.encode(config.accessSecret));
 }
 
 export async function signRefreshToken(userId: string, familyId: string, jti = randomUUID()) {
-  const ttlMs = ms(Number(config.refreshTtl));
+  const ttlMs = ms(config.refreshTtl);
+  if (typeof ttlMs !== "number") {
+    throw new Error(`Invalid refreshTtl: ${config.refreshTtl}`);
+  }
   return new SignJWT({ sub: userId, jti, familyId, kind: 'refresh' } as RefreshPayload)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()

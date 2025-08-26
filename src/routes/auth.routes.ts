@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import { Router,Response } from 'express';
 import { z } from 'zod';
 import ms from 'ms';
 import { config } from '../config';
 import { login, register } from '../services/auth.service';
 import { rotateRefresh, revokeCurrentRefresh, revokeFamilyByToken, blacklistAccessJti } from '../services/token.service';
-import { verifyAccess, verifyRefresh } from '../utils/tokens';
+import { verifyAccess, verifyRefresh } from '../utils/token';
 import { User } from '../models/User';
 
 import { randomBytes } from 'crypto';
@@ -50,7 +50,7 @@ router.post('/refresh', async (req, res) => {
       sameSite: 'strict',
       domain: config.cookieDomain,
       path: '/api/auth/refresh',
-      maxAge: ms(config.refreshTtl),
+      maxAge: Number(ms(config.refreshTtl)),
     });
     res.json({ accessToken: access });
   } catch (e: any) {

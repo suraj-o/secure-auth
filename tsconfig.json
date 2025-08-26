@@ -6,6 +6,9 @@
     "esModuleInterop": true,
     "strict": true,
     "outDir": "dist",
+    "declarationDir": "types",
+    "declarationMap": true,
+    "declaration": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "sourceMap": true

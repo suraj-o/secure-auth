@@ -6,7 +6,7 @@ import { connectMongo } from './db';
 import { config } from './config';
 import { tinyRateLimit } from './middleware/rateLimit';
 import authRoutes from './routes/auth.routes';
-import protectedRoutes from './routes/protected.routes';
+// import protectedRoutes from './routes/protected.routes';
 
 const app = express();
 
@@ -16,8 +16,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(tinyRateLimit());
 
-app.use('/api/auth', authRoutes);
-app.use('/api', protectedRoutes);
+app.use('/api/auth',(req,res,next)=>{
+  console.log(req.cookies)
+  next();
+}, authRoutes);
+// app.use('/api', protectedRoutes);
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 

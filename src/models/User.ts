@@ -19,21 +19,55 @@ export interface IUser extends Document {
 }
 
 const RefreshSchema = new Schema<RefreshRecord>({
-  jti: { type: String, required: true },
-  familyId: { type: String, required: true },
-  hashedToken: { type: String, required: true },
-  createdAt: { type: Date, required: true },
-  expiresAt: { type: Date, required: true },
-  revokedAt: { type: Date },
-  replacedBy: { type: String },
+  jti: { 
+    type: String, 
+    required: true 
+  },
+  familyId: { 
+    type: String, 
+    required: true 
+  },
+  hashedToken: { 
+    type: String, 
+    required: true 
+  },
+  createdAt: { 
+    type: Date, 
+    required: true 
+  },
+  expiresAt: { 
+    type: Date, 
+    required: true 
+  },
+  revokedAt: { 
+    type: Date 
+  },
+  replacedBy: { 
+    type: String 
+  },
   ip: String,
   userAgent: String
-}, { _id: false });
+}, 
+{ 
+  _id: false 
+}
+);
 
 const UserSchema = new Schema<IUser>({
-  email: { type: String, required: true, unique: true, index: true },
-  passwordHash: { type: String, required: true },
-  refreshTokens: { type: [RefreshSchema], default: [] }
+  email: { 
+    type: String, 
+    required: true, 
+    unique: true, 
+    index: true 
+  },
+  passwordHash: { 
+    type: String, 
+    required: true 
+  },
+  refreshTokens: { 
+    type: [RefreshSchema], 
+    default: [] 
+  }
 }, { timestamps: true });
 
 export const User = model<IUser>('User', UserSchema);
